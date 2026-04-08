@@ -1,94 +1,79 @@
-# 仝心 TongXin
+# 仝心 TongXin - 智能心理健康服务平台
 
-<div align="center">
-  <img src="https://img.shields.io/badge/Vue-3.x-green.svg" alt="Vue">
-  <img src="https://img.shields.io/badge/Node.js-18.x-blue.svg" alt="Node.js">
-  <img src="https://img.shields.io/badge/Express-4.x-blue.svg" alt="Express">
-  <img src="https://img.shields.io/badge/MySQL-8.x-orange.svg" alt="MySQL">
-  <img src="https://img.shields.io/badge/DeepSeek-API-purple.svg" alt="DeepSeek">
-  <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License">
-</div>
+## 项目简介
 
-## 📋 项目简介
+仝心 TongXin 是一个基于 Vue 3 和 Node.js 开发的智能心理健康服务平台，结合 LangChain 框架与 RAG（检索增强生成）技术，旨在为用户提供专业的心理健康支持、情绪追踪以及自助干预工具。项目依托于大语言模型（如 DeepSeek），为您搭建一个随时倾听、提供专业心理指导的 AI 助手。
 
-仝心 TongXin 是一个基于 Vue 3 和 Node.js 开发的智能心理健康服务平台，旨在为用户提供专业的心理健康支持和自助工具。
+## 核心功能
 
-### ✨ 核心功能
+- **智能 AI 对话 (RAG 增强)**：基于 LangChain 整合本地心理学知识库（RAG），结合 DeepSeek 模型的强大能力，提供具有专业背景知识的心理健康与疏导对话。
+- **情绪追踪与可视化**：每日记录用户情绪状态，利用 ECharts 提供直观的情绪波动周期图表分析。
+- **专业心理评测**：内置专业的心理健康测评问卷体系，支持多维度的数据结果分析。
+- **心理自助工具箱**：提供放松练习音频指导以及心理健康相关资料等自主舒缓工具。
+- **数据中心与内容管理**：用户数据全方位统计和可视化展示。
+- **个人中心设置**：支持主题切换（白天/暗夜模式）及细致的个人信息管理。
 
-- **智能AI对话**：基于DeepSeek API的专业心理健康对话，支持上下文记忆
-- **情绪追踪**：记录和分析用户情绪变化，提供可视化数据
-- **自助工具**：
-  - 心理健康测试
-  - 放松练习指导
-  - 心理健康资源中心
-- **数据中心**：用户数据统计和分析，可视化展示
-- **个人中心**：用户信息管理和偏好设置
-- **管理员功能**：内容管理和用户管理
+## 技术栈
 
-## 🛠️ 技术栈
-
-### 前端
-- **框架**：Vue 3 + Vite
+### 前端 (TongXin-web)
+- **核心框架**：Vue 3 + Vite
 - **状态管理**：Pinia
-- **路由**：Vue Router
-- **UI组件库**：Element Plus
-- **HTTP客户端**：Axios
-- **图表库**：ECharts
-- **富文本编辑器**：WangEditor
+- **路由控制**：Vue Router 4
+- **UI 组件库**：Element Plus
+- **图表展示**：ECharts
+- **文档渲染**：Marked + DOMPurify
+- **富文本**：WangEditor
 
-### 后端
-- **语言**：Node.js
-- **框架**：Express
-- **数据库**：MySQL
-- **ORM**：mysql2/promise
-- **认证**：JWT (JSON Web Token)
-- **AI接口**：DeepSeek API
+### 后端 (TongXin-server)
+- **运行环境**：Node.js + Express
+- **AI 与大模型驱动**：LangChain + @langchain/openai
+- **持久化存储**：MySQL 8.x + mysql2 (Promise 封装)
+- **鉴权认证**：JWT (JSON Web Token)
 
-## 🚀 快速开始
+## 快速开始
 
-### 环境要求
+### 运行环境要求
 
 - Node.js >= 18.x
 - MySQL >= 8.x
 - npm >= 9.x
 
-### 安装步骤
+### 安装与数据库配置
 
-1. **克隆项目**
+1. **克隆项目并安装依赖**
 ```bash
 git clone <repository-url>
 cd TongXin
-```
 
-2. **安装后端依赖**
-```bash
+# 安装后端依赖
 cd TongXin-server
 npm install
-```
 
-3. **安装前端依赖**
-```bash
+# 安装前端依赖
 cd ../TongXin-web
 npm install
 ```
 
-### 数据库配置
+2. **数据库初始化**
+   - 创建名为 `tongxin` 的 MySQL 数据库。
+   - 运行后端提供的初始化脚本以构建数据表结构：
+     ```bash
+     cd TongXin-server
+     node scripts/run-init-sql.js
+     ```
 
-1. 创建MySQL数据库
-```sql
-CREATE DATABASE tongxin;
-```
-
-2. 配置 AI Key
-```bash
-# 在 TongXin-server/src/config/aiConfig.js 中配置：
-# auth.deepseekApiKey
-# auth.zhipuApiKey
-```
+3. **环境变量及模型配置**
+   - 在后端通过 `.env` 文件填入数据库连接信息及鉴权密钥。
+   - 配置大模型 API Key。在 `TongXin-server/src/config/aiConfig.js` 中设定（如 DeepSeek API 或兼容 OpenAI 的智谱大模型配置）。
+   - 前端可在 `.env.development` 中配置自动登录凭证：
+     ```env
+     VITE_AUTO_LOGIN_USER=admin
+     VITE_AUTO_LOGIN_PASSWORD=admin123
+     ```
 
 ### 启动服务
 
-#### 方法一：使用启动脚本（推荐）
+**方法一：使用启动脚本（推荐）**
 ```bash
 # PowerShell
 .\start-dev.ps1
@@ -97,132 +82,76 @@ CREATE DATABASE tongxin;
 start-dev.bat
 ```
 
-#### 方法二：手动启动
+**方法二：手动启动**
 ```bash
-# 启动后端
+# 启动后端服务服务（推荐在新终端运行）
 cd TongXin-server
-npm start
+npm start 或者 npm run dev
 
-# 启动前端（新终端）
+# 启动前端应用（推荐在新终端运行）
 cd TongXin-web
 npm run dev
 ```
 
-### 访问地址
+- 前端默认访问地址：[http://localhost:5173](http://localhost:5173)
+- 后端默认 API 地址：[http://localhost:3000](http://localhost:3000)
 
-- 前端：http://localhost:5173
-- 后端API：http://localhost:3000
+## 项目结构
 
-## 📁 项目结构
-
-```
+```text
 TongXin/
-├── TongXin-server/           # 后端服务
-│   ├── config/              # 配置文件
-│   │   └── database.js      # 数据库配置
-│   ├── controllers/         # 控制器
-│   │   ├── authController.js      # 认证控制器
-│   │   ├── messageController.js   # 消息控制器
-│   │   └── sessionController.js   # 会话控制器
-│   ├── routes/              # 路由
-│   │   ├── auth.js          # 认证路由
-│   │   ├── messages.js      # 消息路由
-│   │   └── sessions.js      # 会话路由
-│   ├── server.js            # 主服务文件
-│   ├── package.json         # 依赖配置
-│   └── .env                 # 环境变量
-├── TongXin-web/             # 前端项目（Vue + Vite）
-│   ├── src/                 # 源代码
-│   ├── public/              # 静态资源
-│   ├── package.json         # 依赖配置
-│   └── vite.config.js       # Vite配置
-├── start-dev.bat            # Windows启动脚本
-├── start-dev.ps1            # PowerShell启动脚本
-└── README.md                # 项目说明
+├── Kb/                         # 本地心理学知识库（针对 RAG 检索建模）
+│   └── 心理治疗手册.md
+├── TongXin-server/             # 后端 Express 服务
+│   ├── scripts/                # 脚本工具 (init-db.sql, run-init-sql.js 等)
+│   ├── src/
+│   │   ├── config/             # DB 连接、环境变量与 AI 参数配置
+│   │   ├── controllers/        # 业务逻辑控制器 (assessment, auth, chat, emotion)
+│   │   ├── routes/             # RESTful API 路由模块
+│   │   ├── services/           # 核心支持服务 (langchainService, ragService)
+│   │   ├── utils/              # 助手工具类 (helpers, pixues 等)
+│   │   ├── app.js              # Express 实例及中间件组装
+│   │   └── server.js           # 主应用入口
+│   └── package.json            # 后端依赖配置
+├── TongXin-web/                # 前端 Vue 3 Web 应用
+│   ├── public/                 # 静态资源 (如音频/relax)
+│   ├── src/
+│   │   ├── api/                # 后端 Axios 请求接口封装 (auth 等)
+│   │   ├── components/         # 全局复用组件 (Navbar, Sidebar, ThemeSwitcher)
+│   │   ├── layouts/            # 页面骨架层 (AdminLayout)
+│   │   ├── router/             # Vue Router 配置
+│   │   ├── stores/             # Pinia 状态管理器 (auth, layout)
+│   │   ├── utils/              # 纯功能工具 (request, storage, theme)
+│   │   └── views/              # 系统视图功能区
+│   │       ├── admin/          # 管理员功能
+│   │       ├── analytics/      # 数据分析报告
+│   │       ├── assessment/     # 问卷评测业务
+│   │       ├── auth/           # 认证登录中心
+│   │       ├── chat/           # 智能辅导对话流
+│   │       ├── emotion/        # 情绪追踪展示
+│   │       ├── profile/        # 个人信息及设置
+│   │       └── tools/          # 自治协助工具
+│   ├── vite.config.js          # Vite 构建配置
+│   └── package.json            # 前端依赖配置
+├── start-dev.bat               # Windows 快捷启动脚手架
+└── start-dev.ps1               # PowerShell 启动脚本
 ```
 
-## 📖 API文档
+## 部署说明
 
-### 认证相关
-
-- `POST /api/auth/register` - 用户注册
-- `POST /api/auth/login` - 用户登录
-- `GET /api/auth/profile` - 获取用户信息
-
-### 消息相关
-
-- `POST /api/messages` - 发送消息
-- `GET /api/messages/:sessionId` - 获取会话消息
-- `POST /api/messages/session` - 创建新会话
-
-### 会话相关
-
-- `GET /api/sessions` - 获取用户会话列表
-- `DELETE /api/sessions/:sessionId` - 删除会话
-
-## 🔧 开发说明
-
-### 环境变量
-
-#### 开发环境 (.env.development)
-- 自动登录已启用
-- API地址: http://localhost:3000
-- 前端地址: http://localhost:5173
-
-#### 生产环境 (.env.production)
-- 自动登录已关闭
-- 需要手动输入用户名密码
-
-### 自动登录功能
-
-开发环境下，系统会自动登录，无需手动输入：
-- 用户名: admin
-- 密码: admin123
-
-如需修改自动登录账号，请编辑 `.env.development` 文件：
-```
-VITE_AUTO_LOGIN_USER=your_username
-VITE_AUTO_LOGIN_PASSWORD=your_password
-```
-
-## 🚀 部署说明
-
-### 前端部署
+### 前端生产环境构建
 ```bash
 cd TongXin-web
 npm run build
-# 部署 dist 目录到静态服务器
 ```
+编译生成的静态页面将输出至 `dist` 目录，可直挂于 Nginx 等各类静态 Web 服务下做代理引流。
 
-### 后端部署
+### 后端生产环境部署
+1. 确保目标服务器装有 Node.js 及 MySQL 等底层系统要求。
+2. 配置好线上数据库连接及大模型的鉴权 Key。
+3. 推荐使用 `PM2` 进程管理套件进行后台守护和资源调控：
 ```bash
 cd TongXin-server
-npm start
-# 使用 PM2 等进程管理器管理服务
+npm install -g pm2
+pm2 start src/server.js --name "TongXin-API"
 ```
-
-## 🤝 贡献指南
-
-欢迎提交Issue和Pull Request！
-
-1. Fork 项目
-2. 创建功能分支 (`git checkout -b feature/amazing-feature`)
-3. 提交更改 (`git commit -m 'Add some amazing feature'`)
-4. 推送到分支 (`git push origin feature/amazing-feature`)
-5. 开启 Pull Request
-
-## 📝 许可证
-
-本项目采用 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件
-
-## 🙏 致谢
-
-- [Vue.js](https://vuejs.org/)
-- [Element Plus](https://element-plus.org/)
-- [DeepSeek](https://www.deepseek.com/)
-- [Express](https://expressjs.com/)
-- [MySQL](https://www.mysql.com/)
-
----
-
-**注意**: 本项目仅供学习和参考，正式使用时请确保遵守相关法律法规和平台规定。
